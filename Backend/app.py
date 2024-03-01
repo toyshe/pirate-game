@@ -31,6 +31,10 @@ def pictionary():
         for line in f:
             wordList.append(line.strip())
         return jsonify(PictionaryPrompts = wordList)
+    
+
+
+
 
 rooms = {}
 
@@ -124,6 +128,15 @@ def disconnect():
     
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
+
+
+
+
+@socketio.on("fe_list_existing_rooms")
+def list_existing_rooms():
+    print("\n******************** \navailable rooms:\n" + "\n".join([f"{room} -> members: {rooms[room]['members']}" for room in rooms]) + "\n********************\n")
+
+    socketio.emit("be_list_existing_rooms", {rooms: rooms})
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)
