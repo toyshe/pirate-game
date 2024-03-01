@@ -136,7 +136,7 @@ def disconnect():
 def list_existing_rooms():
     print("\n******************** \navailable rooms:\n" + "\n".join([f"{room} -> members: {rooms[room]['members']}" for room in rooms]) + "\n********************\n")
 
-    socketio.emit("be_list_existing_rooms", {rooms: rooms})
+    socketio.emit("be_list_existing_rooms", {'rooms': rooms})
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)

@@ -13,6 +13,7 @@ export default function StoryPage() {
     useEffect(() => {
 
         function list_existing_rooms({rooms}){
+            console.log('in here');
             console.log(rooms);
         }
 
