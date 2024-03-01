@@ -5,3 +5,4 @@ Flask_SocketIO==5.3.6
 # waitress==3.0
 gunicorn==19.7.1
 jsonify==0.5
+eventlet==0.35.2

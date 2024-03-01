@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 5000
 
 # Start the Flask app
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
+CMD ["gunicorn", "-k", "eventlet", "-w", "1", "--timeout", "600", "app:app", "-b", "0.0.0.0:5000"]
