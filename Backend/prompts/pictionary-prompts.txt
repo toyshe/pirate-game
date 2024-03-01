@@ -1,0 +1,47 @@
+anchor
+barrel
+bounty
+cannon
+captain
+cargo
+cave
+chest
+coins
+compass
+cutlass
+dagger
+desert island
+earring
+eye patch
+gold
+gunpowder
+hook
+horizon
+jewels
+knife
+lookout
+loot
+map
+ocean
+overboard
+parrot
+pegleg
+pirate
+pistol
+plank
+rigging
+rope
+sail
+sailor
+scar
+seaweed
+ship
+shore
+siren
+skull and bones
+ship wheel
+sword
+thief
+treasure
+walk the plank
+x marks the spot
