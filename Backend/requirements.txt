@@ -3,5 +3,5 @@ Flask==3
 Flask_SocketIO==5.3.6
 # pytest==8.0.1
 # waitress==3.0
-# gunicorn==19.7.1
+gunicorn==19.7.1
 jsonify==0.5
