@@ -178,7 +178,7 @@ def fe_users_list(data):
     room = data['room']
     users = rooms[room]['users']
 
-    socketio.emit("be_users_list", {"users": users})
+    socketio.emit("be_users_list", {"users": users, "room": room})
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)

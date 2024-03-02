@@ -6,7 +6,7 @@ export default function StoryPage() {
 
     const [usernameInput, setUsernameInput] = useState('')
 
-    const { userInfo } = useContext(UserContext)
+    const { userInfo, setUserInfo } = useContext(UserContext)
 
     const navigate = useNavigate()
 

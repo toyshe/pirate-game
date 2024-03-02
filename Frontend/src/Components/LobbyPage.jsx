@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getAvatar } from "../Utils/utils";
 import AvatarButton from "./AvatarButtons";
+import { UsersContext } from "../Contexts/UsersContext";
 
 export default function LobbyPage() {
   const minimumPlayers = 1;
@@ -10,7 +11,7 @@ export default function LobbyPage() {
   const [chosenAvatar, setChosenAvatar] = useState(null);
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
-
+  const {usersArr} = useContext(UsersContext)
  
 
   useEffect(() => {
@@ -47,6 +48,11 @@ export default function LobbyPage() {
         }}
       >
         <h2 style={{ fontSize: "5vw" }}>{room_code}</h2>
+        {console.log(usersArr)}
+        {usersArr.map((user) => {
+            
+            return <h3>{user.username}</h3>
+        })}
         
         <div className="avatar-buttons">
           <h3 style={{ fontSize: "2vw" }}>Choose an avatar:</h3>
