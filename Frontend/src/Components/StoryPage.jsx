@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react"
 import UserContext from "../Contexts/UserContext"
-import socket from "../Utils/socket"
 import { useNavigate } from "react-router-dom"
 
 export default function StoryPage() {
@@ -9,45 +8,11 @@ export default function StoryPage() {
 
     const { userInfo } = useContext(UserContext)
 
-    const [roomsArr, setRoomsArr] = useState([])
-
-    const [showButtons, setShowButtons] = useState(false)
-    const [joinClick, setJoinClick] = useState(false)
-
-    const navigate  = useNavigate()
-
-    useEffect(() => {
-
-        function list_existing_rooms({ rooms }) {
-            setRoomsArr(() => [Object.keys(rooms)])
-            console.log(roomsArr);
-        }
-
-        function join_room(data) {
-            console.log(data);
-        }
-
-        socket.on("be_list_existing_rooms", list_existing_rooms)
-        socket.on("be_join_room", join_room)
-
-        return () => {
-            socket.off("be_list_existing_rooms", list_existing_rooms)
-            socket.off("be_join_room", join_room)
-        }
-    }, [])
+    const navigate = useNavigate()
 
 
-    const handleJoin = () => {
-        setJoinClick(true)
-        //display the list of the room
-        socket.emit("fe_list_existing_rooms")
-        console.log(roomsArr);
-        //add member to the new room
-        //navigate to the rooms page
-        
-    }
     
-    
+
     const handleSubmit = (event) => {
         setShowButtons(true)
         userInfo.username = usernameInput
@@ -56,24 +21,36 @@ export default function StoryPage() {
     }
 
     const handleClick = () => {
-        //create a new room
-        //navigate to the rooms page
+        navigate('/rooms')
     }
 
-    const handleJoinRoom = (event) => {
-        event.preventDefault()
-        socket.emit("fe_join_room", { username: userInfo.username, room: event.target.value })
-        navigate(`/rooms/${event.target.value}`)
-    }
 
     return (
-        <>
+        <div className="container">
+            <div className="parent">
+                <img src={"../../images/scroll.png"} className="story-scroll" />
+                <div className="child">
+                    <p>
+                        An infamous crew of fearsome pirates sail the seven seas, plundering
+                        and pillaging all in their wake.
+                        <br />
+                        <br />
+                        Unbeknownst to the rest of the crew, one of the pirates is seduced
+                        by The Siren, who longs to bring the ship to its watery demise.
+                        <br />
+                        <br />
+                        Will the crew make it to land, or will they be united with The Siren
+                        for all eternity?
+                    </p>
+                </div>
+            </div>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="username">
                     Username:
                 </label>
                 <input id="username" value={usernameInput} type="text" placeholder="Enter username..." onChange={(event) => { setUsernameInput(event.target.value) }} />
-                {showButtons ? <>
+                <button onClick={handleClick}>Continue</button>
+                {/* {showButtons ? <>
 
                     <button onClick={handleJoin} >
                         Join Room
@@ -83,9 +60,9 @@ export default function StoryPage() {
                     </button>
                 </> : null}
                 <div className="roomsList">
-                    {joinClick ? roomsArr.map((room) => {return <button value={room} onClick={handleJoinRoom}>{room}</button>}) : null}
-                </div>
+                    {joinClick ? roomsArr.map((room) => { return <button key={room} value={room} onClick={handleJoinRoom}>{room}</button> }) : null}
+                </div> */}
             </form>
-        </>
+        </div>
     )
 }

@@ -69,7 +69,7 @@ def home():
         if create != False:
             print("Made it this far")
             room = generate_unique_code(4)
-            rooms[room] = {"members": 0, "messages": []}
+            rooms[room] = {"members": 0, "messages": [], "users": []}
         elif code not in rooms:
             return render_template("home.html", error="Room does not exist.", code=code, name=name)
         
@@ -146,6 +146,7 @@ def fe_join_room(data):
 
     join_room(room)
     rooms[room]['members'] += 1
+    rooms[room]['users'].append(name)
 
     list_existing_rooms()
 
