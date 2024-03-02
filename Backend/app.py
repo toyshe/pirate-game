@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, j
 from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 from string import ascii_uppercase
+import sys
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "hjhjsdahhds"
@@ -31,6 +32,10 @@ def pictionary():
         for line in f:
             wordList.append(line.strip())
         return jsonify(PictionaryPrompts = wordList)
+    
+
+
+
 
 rooms = {}
 
@@ -124,6 +129,27 @@ def disconnect():
     
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
+
+
+
+@socketio.on("fe_list_existing_rooms")
+def list_existing_rooms():
+    print("\n******************** \navailable rooms:\n" + "\n".join([f"{room} -> members: {rooms[room]['members']}" for room in rooms]) + "\n********************\n")
+    sys.stdout.flush()
+
+    socketio.emit("be_list_existing_rooms", {'rooms': rooms})
+
+@socketio.on("fe_join_room")
+def fe_join_room(data):
+    room = data['room']
+    name = data['username']
+
+    join_room(room)
+    rooms[room]['members'] += 1
+
+    list_existing_rooms()
+
+    socketio.emit("be_join_room", {'rooms': room})
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)
