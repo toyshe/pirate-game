@@ -152,5 +152,12 @@ def fe_join_room(data):
 
     socketio.emit("be_join_room", {'rooms': room})
 
+@socketio.on("fe_users_list")
+def fe_users_list(data):
+    room = data['room']
+    users = rooms[room]['users']
+
+    socketio.emit("be_users_list", {"users": users})
+
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)
