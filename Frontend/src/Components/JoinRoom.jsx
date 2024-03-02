@@ -50,6 +50,7 @@ export default function JoinRoom() {
 
     const handleJoinRoom = (event) => {
         event.preventDefault()
+        console.log(userInfo.username);
         socket.emit("fe_join_room", { username: userInfo.username, room: event.target.value })
         socket.emit("fe_users_list", {room: event.target.value})
         // navigate(`/rooms/${event.target.value}`)
@@ -57,7 +58,7 @@ export default function JoinRoom() {
 
     return (<>
         <button onClick={handleJoin}>Join Room</button>
-        <button>Create Room</button>
+        <button onClick={handleCreate}>Create Room</button>
         {joinClick && loading ? (
             <p>Loading...</p>
         ) : joinClick && roomsArr.length === 0 ? (

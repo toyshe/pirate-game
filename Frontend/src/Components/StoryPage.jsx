@@ -10,19 +10,17 @@ export default function StoryPage() {
 
     const navigate = useNavigate()
 
-
-
-
     const handleSubmit = (event) => {
-        setShowButtons(true)
-        userInfo.username = usernameInput
         event.preventDefault()
+        userInfo.username = usernameInput
+        console.log(userInfo.username);
         console.log(userInfo);
-    }
-
-    const handleClick = () => {
         navigate('/rooms')
     }
+
+    // const handleClick = () => {
+    //     navigate('/rooms')
+    // }
 
 
     return (
@@ -44,12 +42,13 @@ export default function StoryPage() {
                     </p>
                 </div>
             </div>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <label htmlFor="username">
                     Username:
                 </label>
                 <input id="username" value={usernameInput} type="text" placeholder="Enter username..." onChange={(event) => { setUsernameInput(event.target.value) }} />
-                <button onClick={handleClick}>Continue</button>
+                <button onClick={handleSubmit}>Continue</button>
+                {/* <button>Continue</button> */}
                 {/* {showButtons ? <>
 
                     <button onClick={handleJoin} >

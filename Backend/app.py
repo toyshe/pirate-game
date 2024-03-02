@@ -156,6 +156,23 @@ def fe_join_room(data):
 
     socketio.emit("be_join_room", {'rooms': room})
 
+@socketio.on("fe_create_room")
+def fe_create_room(data):
+    name = data['username']
+
+    room = generate_unique_code(4)
+    rooms[room] = {"members": 0, "messages": [], "users": []}
+
+    join_room(room)
+
+    rooms[room]['members'] += 1
+    rooms[room]['users'].append(name)
+    print(name, room)
+    sys.stdout.flush()
+
+    data = {"name": name, "room": room, "users": rooms[room]['users']}
+    socketio.emit("be_create_room", data)
+
 @socketio.on("fe_users_list")
 def fe_users_list(data):
     room = data['room']
