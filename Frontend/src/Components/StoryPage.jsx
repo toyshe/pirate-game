@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import UserContext from "../Contexts/UserContext"
 import socket from "../Utils/socket"
+import { useNavigate } from "react-router-dom"
 
 export default function StoryPage() {
 
@@ -9,8 +10,11 @@ export default function StoryPage() {
     const { userInfo } = useContext(UserContext)
 
     const [roomsArr, setRoomsArr] = useState([])
+
     const [showButtons, setShowButtons] = useState(false)
     const [joinClick, setJoinClick] = useState(false)
+
+    const navigate  = useNavigate()
 
     useEffect(() => {
 
@@ -59,7 +63,7 @@ export default function StoryPage() {
     const handleJoinRoom = (event) => {
         event.preventDefault()
         socket.emit("fe_join_room", { username: userInfo.username, room: event.target.value })
-
+        navigate(`/rooms/${event.target.value}`)
     }
 
     return (
