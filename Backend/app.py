@@ -143,10 +143,14 @@ def list_existing_rooms():
 def fe_join_room(data):
     room = data['room']
     name = data['username']
+    print(name)
+    sys.stdout.flush()
 
     join_room(room)
     rooms[room]['members'] += 1
     rooms[room]['users'].append(name)
+    print(rooms[room]['users'])
+    sys.stdout.flush()
 
     list_existing_rooms()
 

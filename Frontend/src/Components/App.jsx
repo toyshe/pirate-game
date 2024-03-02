@@ -1,6 +1,6 @@
 import '../App.css'
 import { useEffect, useState } from 'react'
-import UserContext from '../Contexts/UserContext'
+import { UserProvider } from '../Contexts/UserContext'
 import StoryPage from './StoryPage'
 import socket from '../Utils/socket'
 import LobbyPage from './LobbyPage'
@@ -9,7 +9,6 @@ import TitlePage from './TitlePage'
 import JoinRoom from './JoinRoom'
 
 function App() {
-  const [userInfo, setUserInfo] = useState({ username: '', avatarUrl: null, isSaboteur: false })
 
   useEffect(() => {
 
@@ -21,7 +20,7 @@ function App() {
 
   return (
     <>
-      <UserContext.Provider value={{ userInfo, setUserInfo }} >
+      <UserProvider >
         {/* <StoryPage /> */}
         <Routes>
           <Route path='/' element={<TitlePage />} />
@@ -29,7 +28,7 @@ function App() {
           <Route path='/rooms' element={<JoinRoom />} />
           <Route path='rooms/:room_code' element={<LobbyPage />} />
         </Routes>
-      </UserContext.Provider>
+      </UserProvider>
     </>
   )
 }

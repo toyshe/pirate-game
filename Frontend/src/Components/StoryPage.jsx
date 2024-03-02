@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import UserContext from "../Contexts/UserContext"
+import { UserContext } from "../Contexts/UserContext"
 import { useNavigate } from "react-router-dom"
 
 export default function StoryPage() {
@@ -11,7 +11,7 @@ export default function StoryPage() {
     const navigate = useNavigate()
 
 
-    
+
 
     const handleSubmit = (event) => {
         setShowButtons(true)
