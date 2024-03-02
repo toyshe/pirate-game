@@ -3,11 +3,12 @@ from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 from string import ascii_uppercase
 import sys
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "hjhjsdahhds"
 socketio = SocketIO(app, cors_allowed_origins="*")
-
+CORS(app)
 
 # avatarURLs = ['https://i.postimg.cc/bvw5txrS/Screenshot-2024-02-19-at-09-51-18.png', 'https://i.postimg.cc/TwyHkTrR/Screenshot-2024-02-19-at-09-53-28.png', 'https://i.postimg.cc/zDgcKXz7/Screenshot-2024-02-19-at-09-53-32.png', 'https://i.postimg.cc/7h0tkXsd/Screenshot-2024-02-19-at-09-53-43.png', 'https://i.postimg.cc/259KF1Lc/Screenshot-2024-02-19-at-09-53-47.png', 'https://i.postimg.cc/TwZNFB9n/Screenshot-2024-02-19-at-09-53-50.png']
 avatarURLs = ['./avatars/Avatar1.png', './avatars/Avatar2.png', './avatars/Avatar3.png', './avatars/Avatar4.png', './avatars/Avatar5.png', './avatars/Avatar6.png']
