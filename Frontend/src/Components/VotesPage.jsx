@@ -3,9 +3,11 @@ import { UsersContext } from "../Contexts/UsersContext";
 import socket from "../Utils/socket";
 import Timer from "./Timer";
 import WakThePlank from "./WalkThePlank";
+import { useParams } from "react-router-dom";
 
 export default function VotesPage(){
-    let timerCountdownSeconds = 30
+    const timerCountdownSeconds = 30
+    const {room_code} = useParams()
     const {usersArr, setUsersArr} = useContext(UsersContext)
     const [votingComplete, setVotingComplete] = useState(false)
     const [timerCompleted, setTimerCompleted] = useState(false)
@@ -13,7 +15,7 @@ export default function VotesPage(){
 
     const handleVote = (user) => {
         setVoteCount({})
-        socket.emit("fe_votes", {username: user.username})
+        socket.emit("fe_votes", {username: user.username, room: room_code})
         setVotingComplete(true)
     }
 
