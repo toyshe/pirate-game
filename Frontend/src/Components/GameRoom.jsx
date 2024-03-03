@@ -5,6 +5,7 @@ import { UserContext } from "../Contexts/UserContext";
 import PlayerRole from "./PlayerRole";
 import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
+import { LivesContext } from "../Contexts/LivesContext";
 
 function GameRoom() {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ function GameRoom() {
     const [round, setRound] = useState(0);
     const { usersArr } = useContext(UsersContext)
     const { userInfo } = useContext(UserContext)
+    const {lives} = useContext(LivesContext)
 
     const pickTurn = () => {
         setDrawTurn((prevTurn) => prevTurn + 1);
@@ -87,6 +89,7 @@ function GameRoom() {
 
     return (
         <div>
+            <h2>Lives: {lives}</h2>
             {!gameOver && !teamLose && (
                 <div>
                     {showPlayerDesignation && <PlayerRole />}

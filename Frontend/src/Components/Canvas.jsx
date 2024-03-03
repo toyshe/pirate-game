@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState, useRef } from "react"
 import { UserContext } from "../Contexts/UserContext"
 import socket from "../Utils/socket"
+import Timer from "./Timer"
+import { LivesContext } from "../Contexts/LivesContext"
 
 export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, isGuesser }) {
     const canvasRef = useRef(null)
@@ -11,10 +13,32 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
     const [rotationAngle, setRotationAngle] = useState(0)
 
     const { userInfo } = useContext(UserContext)
+    const { setLives } = useContext(LivesContext)
 
     const [guessInput, setGuessInput] = useState('')
+    const [hiddenWord, setHiddenWord] = useState([])
+
+    const roundLength = 29000;
+
+    useEffect(() => {
+        if (randomPrompt) {
+            setHiddenWord(randomPrompt.split("").map(() => "_"));
+        }
+    }, [randomPrompt]);
 
     const [win, setWin] = useState(false)
+    const [lose, setLose] = useState(false)
+
+    useEffect(() => {
+        const roundPageTimer = setTimeout(() => {
+            if (!win) {
+                setLives((currentLives) => currentLives - 1);
+                setLose(true);
+            }
+        }, roundLength);
+        return () => clearTimeout(roundPageTimer);
+    }, [win]);
+
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -103,10 +127,28 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
             }
         });
 
+        socket.on("be_rotate_canvas", () => {
+            let start = null;
+            const animate = (timestamp) => {
+                if (!start) start = timestamp;
+                const progress = timestamp - start;
+                const angle = (progress / 2000) * 360; // Rotate over 2 seconds
+                setRotationAngle(angle);
+                if (progress < 2000) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Reset rotation angle to 0 after rotation completes
+                    setRotationAngle(0);
+                }
+            };
+            requestAnimationFrame(animate);
+        })
+
         return () => {
             socket.off("be_start_drawing")
             socket.off("be_draw")
             socket.off("be_finish_drawing")
+            socket.off("be_rotate_canvas")
         }
     }, [canvasRef])
 
@@ -153,6 +195,7 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
             }
         };
         requestAnimationFrame(animate);
+        socket.emit("fe_rotate_canvas")
     };
 
     function handleGuess(e) {
@@ -160,6 +203,7 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
         console.log(randomPrompt);
         if (guessInput.toLowerCase() === randomPrompt.toLowerCase()) {
             setWin(true)
+            setHiddenWord(Array.from(randomPrompt))
         }
         else {
             console.log('try again');
@@ -169,11 +213,13 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
     return (
         <div>
             <h1>{isDrawer.username} is drawing ... : {isGuesser.username} is guessing ...</h1>
+            <Timer timerCountdownSeconds={timerCountdownSeconds} />
             {win && <h1>Correct Answer! Sail onto the next Round!</h1>}
+            {lose && <h1>Too slow! The crew loses a life. The word was {randomPrompt}</h1>}
             <canvas
                 ref={canvasRef}
-                width={1000}
-                height={800}
+                width={500}
+                height={400}
                 onMouseDown={startDrawing}
                 onMouseMove={drawFE}
                 onMouseUp={finishDrawing}
@@ -188,11 +234,12 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
                 {console.log(randomPrompt)}
                 {randomPrompt !== null && (
                     <>
+                        {console.log(hiddenWord)}
                         {userInfo.draw ? (
 
                             <h1 className="drawPrompt"> Draw a {randomPrompt}</h1>
                         ) : (
-                            <h1>Guess the word ...</h1>
+                            <h1 className="drawPrompt">Guess the word ... {hiddenWord.join(" ")}</h1>
                         )}
                     </>)}
                 {userInfo.draw && <button onClick={handleReset}>Reset</button>}

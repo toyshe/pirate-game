@@ -313,6 +313,13 @@ h3 {
   padding: 10px;
 }
 
+canvas {
+  width: 500px; /* Set the width to 500 pixels */
+  height: 400px; /* Set the height to 400 pixels */
+  background-color: white;
+  border: 7px solid red;
+}
+
 
 .player-title {
   white-space: nowrap;
@@ -434,8 +441,9 @@ h3 {
 
 .drawPrompt{
   position: absolute;
-  top: 3%;
+  top: 1%;
   right: 40%;
+  color: black;
 }
 
 
