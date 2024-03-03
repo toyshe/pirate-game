@@ -8,7 +8,7 @@ import PlayerCard from "./PlayerCard";
 import socket from "../Utils/socket";
 
 export default function LobbyPage() {
-  const minimumPlayers = 1;
+  const minimumPlayers = 2;
 
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
@@ -16,8 +16,9 @@ export default function LobbyPage() {
   const [avatars, setAvatars] = useState([]);
   const {usersArr} = useContext(UsersContext)
   const {userInfo} = useContext(UserContext)
- 
 
+  const totalPlayers = usersArr.flat().length
+ 
   useEffect(() => {
     getAvatar()
       .then((data) => {
@@ -36,6 +37,7 @@ export default function LobbyPage() {
 
   function handleStart() {
     navigate('/play')
+    socket.emit("fe_start_game")
   }
 
 
@@ -53,7 +55,6 @@ export default function LobbyPage() {
         <h2 style={{ fontSize: "5vw" }}>{room_code}</h2>
 
         <PlayerCard key={userInfo.username} player={userInfo} />
-        {console.log(usersArr)}
         {usersArr.flat().map((user) => {
             if(user.username !== userInfo.username){
                 return <PlayerCard key={user.username} player={user} />
@@ -75,7 +76,7 @@ export default function LobbyPage() {
           })}
           <br />
         </div>
-        <button onClick={handleStart} >
+        <button onClick={handleStart} disabled={totalPlayers < minimumPlayers} >
           Start Game!
         </button>
       </main>

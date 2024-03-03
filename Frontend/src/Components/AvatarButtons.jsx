@@ -1,11 +1,12 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../Contexts/UserContext";
 import { UsersContext } from "../Contexts/UsersContext";
+import socket from "../Utils/socket";
 
 export default function AvatarButton({ avatar, chosenAvatar, setChosenAvatar }) {
 
-    const {setUserInfo, userInfo} = useContext(UserContext)
-    const {setUsersArr, usersArr} = useContext(UsersContext)
+    const { setUserInfo, userInfo } = useContext(UserContext)
+    const { setUsersArr, usersArr } = useContext(UsersContext)
 
     function handleAvatarClick(avatar) {
         setChosenAvatar(avatar);
@@ -20,10 +21,25 @@ export default function AvatarButton({ avatar, chosenAvatar, setChosenAvatar }) 
                     : player
             )
         );
-        socket.emit("fe_avatar_select")
-        console.log(usersArr);
-
+        socket.emit("fe_avatar_select", {username: userInfo.username, avatarUrl: userInfo.avatarUrl})
     }
+
+    useEffect(() => {
+
+        function choseAvatar({ username, avatarUrl }) {
+            setUsersArr((currentUsers) =>
+                currentUsers.map((user) =>
+                    user.username === username ? { ...user, avatarUrl } : user
+                )
+            );
+        }
+        socket.on("be_avatar_select", choseAvatar)
+
+        return () => {
+            socket.off("be_avatar_select", choseAvatar)
+        }
+    })
+
 
     return (
         <img
