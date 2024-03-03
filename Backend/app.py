@@ -194,5 +194,11 @@ def fe_start_game(data):
     sys.stdout.flush()
     socketio.emit("be_start_game", {'saboteur': saboteurName})
 
+@socketio.on("fe_random_prompt")
+def fe_random_prompt(data):
+    prompt = data['prompt']
+
+    socketio.emit("be_random_prompt", {'prompt' : prompt})
+
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)
