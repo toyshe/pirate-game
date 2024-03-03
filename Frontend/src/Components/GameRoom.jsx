@@ -7,6 +7,7 @@ import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
 import { LivesContext } from "../Contexts/LivesContext";
 import ChatBox from "./ChatBox";
+import VotesPage from "./VotesPage";
 
 function GameRoom() {
     const navigate = useNavigate();
@@ -41,9 +42,8 @@ function GameRoom() {
         const currentGuess = usersArr[guessTurn];
         setIsGuesser(currentGuess);
         currentGuess.username === userInfo.username ? (userInfo.guess = true) : (userInfo.guess = false);
-        console.log(isDrawer, '<<isDrawer');
-        console.log(isGuesser, '<<isGuesser');
-        console.log(userInfo, '<<userInfo');
+
+        console.log(userInfo);
     };
 
     let playerDesignationLength = 5000;
@@ -88,6 +88,13 @@ function GameRoom() {
         }
     }, [showCanvasTestPage]);
 
+    useEffect(() => {
+        if(lives < 1){
+            setGameOver(true)
+            setTeamLose(true)
+        }
+    })
+
     return (
         <div>
             <h2>Lives: {lives}</h2>
@@ -100,6 +107,7 @@ function GameRoom() {
                     )}
                 </div>
             )}
+            {teamLose && gameOver && <VotesPage />}
             <ChatBox />
         </div>
     )

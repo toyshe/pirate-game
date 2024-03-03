@@ -234,6 +234,18 @@ def fe_lives(data):
 
     socketio.emit("be_lives", {'lives': lives})
 
+vote_counts = {}
+
+@socketio.on("fe_votes")
+def fe_votes(data):
+    username = data['username']
+    if username in vote_counts:
+        vote_counts[username] += 1
+    else:
+        vote_counts[username] = 1
+
+    socketio.emit("be_votes", {'votes': vote_counts})
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)

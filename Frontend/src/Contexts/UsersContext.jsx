@@ -12,6 +12,7 @@ export const UsersProvider = ({ children }) => {
       username: user,
       avatarUrl: null,
       isSaboteur: false,
+      votes: 0
     }));
     setUsersArr(newArr); // Set the state directly to the new array
   };

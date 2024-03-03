@@ -13,7 +13,7 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
     const [rotationAngle, setRotationAngle] = useState(0)
 
     const { userInfo } = useContext(UserContext)
-    const { setLives } = useContext(LivesContext)
+    const { setLives, lives } = useContext(LivesContext)
 
     const [guessInput, setGuessInput] = useState('')
     const [hiddenWord, setHiddenWord] = useState([])
@@ -31,11 +31,19 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
 
     useEffect(() => {
         const roundPageTimer = setTimeout(() => {
-            if (!win) {
-                setLives((currentLives) => currentLives - 1);
-                socket.emit("fe_lives", {lives: lives})
+            console.log(win, '<<<<win');
+            console.log(userInfo.guess === true && win === false, '<<<<guess && win');
+            if (userInfo.guess !== undefined && win === false && userInfo.guess === true) {
+                setLives((currentLives) => {
+                    const newLives = currentLives - 1;
+                    socket.emit("fe_lives", { lives: newLives });
+                    return newLives;
+                });
+                console.log(lives, '<<<<inside if');
                 setLose(true);
             }
+            console.log('in here');
+
         }, roundLength);
         return () => clearTimeout(roundPageTimer);
     }, [win]);
@@ -145,7 +153,7 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
             requestAnimationFrame(animate);
         })
 
-        socket.on("be_lives", ({lives}) => {
+        socket.on("be_lives", ({ lives }) => {
             setLives(lives)
             console.log(lives);
         })
