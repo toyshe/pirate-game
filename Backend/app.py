@@ -238,13 +238,34 @@ vote_counts = {}
 
 @socketio.on("fe_votes")
 def fe_votes(data):
+    room = data['room']
     username = data['username']
-    if username in vote_counts:
-        vote_counts[username] += 1
-    else:
-        vote_counts[username] = 1
 
-    socketio.emit("be_votes", {'votes': vote_counts})
+    if room not in vote_counts:
+        vote_counts[room] = {}
+
+    if username in vote_counts[room]:
+        vote_counts[room][username] += 1
+    else:
+        vote_counts[room][username] = 1
+    socketio.emit("be_votes", {'votes': vote_counts[room]})
+
+@socketio.on("fe_send_message")
+def fe_send_message(data):
+    room = data['room']
+    name = data['name']
+    message = data['message']
+
+    message_content = {
+        "name": name, "message": message, "room": room
+    }
+
+    rooms[room]["messages"].append(message_content)
+    socketio.emit("be_send_message", message_content)
+
+@socketio.on("fe_reset_canvas")
+def fe_reset_canvas():
+    socketio.emit("be_reset_canvas")
 
 
 if __name__ == "__main__":

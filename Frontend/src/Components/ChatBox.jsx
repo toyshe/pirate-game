@@ -22,7 +22,7 @@ export default function ChatBox() {
       minute: "numeric",
     });
     event.preventDefault();
-    socket.emit("frontend_send_message", {
+    socket.emit("fe_send_message", {
       name: userInfo.username,
       message: inputMessage,
       room: room_code,
@@ -42,12 +42,10 @@ export default function ChatBox() {
       }
     }
 
-    socket.on("send-message", onMessage);
-    socket.on("backend_send_message", onMessage);
+    socket.on("be_send_message", onMessage);
 
     return () => {
-      socket.off("send-message", onMessage);
-      socket.off("backend_send_message", onMessage);
+      socket.off("be_send_message", onMessage);
     };
   }, []);
 
