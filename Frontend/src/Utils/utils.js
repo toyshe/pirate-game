@@ -7,3 +7,9 @@ export function getAvatar(){
         return response.data
     })
 }
+
+export function getPictionaryPrompts(){
+    return axios.get("https://pirate-game-lb9p.onrender.com/pictionaryPrompts").then((response) => {
+        return response.data
+    })
+}

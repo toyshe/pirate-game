@@ -7,6 +7,8 @@ import LobbyPage from './LobbyPage'
 import { Routes, Route } from 'react-router-dom'
 import TitlePage from './TitlePage'
 import JoinRoom from './JoinRoom'
+import PlayerRole from './PlayerRole'
+import GameRoom from './GameRoom'
 
 function App() {
 
@@ -27,6 +29,7 @@ function App() {
           <Route path='/story' element={<StoryPage />} />
           <Route path='/rooms' element={<JoinRoom />} />
           <Route path='rooms/:room_code' element={<LobbyPage />} />
+          <Route path='rooms/:room_code/play' element={<GameRoom />} />
         </Routes>
       </UserProvider>
     </>

@@ -14,8 +14,8 @@ export default function LobbyPage() {
   const [chosenAvatar, setChosenAvatar] = useState(null);
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
-  const { usersArr } = useContext(UsersContext)
-  const { userInfo } = useContext(UserContext)
+  const { usersArr, setUsersArr } = useContext(UsersContext)
+  const { userInfo, setUserInfo } = useContext(UserContext)
   const [saboteur, setSaboteur] = useState({})
 
   const totalPlayers = usersArr.flat().length
@@ -31,11 +31,23 @@ export default function LobbyPage() {
         setError(err);
       });
 
-    function onStart() {
-
-
-      navigate(`/rooms/${room_code}/play`)
-    }
+      function onStart({ saboteur }) {
+        console.log(saboteur);
+        setUsersArr((currentUsers) => {
+          const updatedUsers = currentUsers.map((user) =>
+            user.username === saboteur
+              ? { ...user, isSaboteur: true }
+              : user
+          );
+          console.log(updatedUsers); // Check if the isSaboteur flag is set correctly
+          return updatedUsers;
+        });
+        setUserInfo((prevUserInfo) => ({
+          ...prevUserInfo,
+          isSaboteur: saboteur === userInfo.username,
+        }));
+        navigate(`/rooms/${room_code}/play`);
+      }
 
     socket.on("be_start_game", onStart)
 
@@ -46,11 +58,7 @@ export default function LobbyPage() {
   function handleStart() {
     const randomIndex = Math.floor(Math.random() * totalPlayers)
     setSaboteur(usersArr[randomIndex])
-    if (usersArr[randomIndex].username === userInfo.username) {
-      userInfo.isSaboteur = true
-      usersArr[randomIndex].isSaboteur = true
-    }
-    socket.emit("fe_start_game", { saboteur: saboteur })
+    socket.emit("fe_start_game", { saboteur: saboteur.username })
   }
 
 
