@@ -188,8 +188,11 @@ def fe_avatar_select(data):
     socketio.emit("be_avatar_select", {'username': name, 'avatarUrl': avatar})
 
 @socketio.on("fe_start_game")
-def fe_start_game():
-    socketio.emit("be_start_game")
+def fe_start_game(data):
+    saboteurName = data['saboteur']
+    print(saboteurName)
+    sys.stdout.flush()
+    socketio.emit("be_start_game", {'saboteur': saboteurName})
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)

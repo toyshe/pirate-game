@@ -14,11 +14,12 @@ export default function LobbyPage() {
   const [chosenAvatar, setChosenAvatar] = useState(null);
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
-  const {usersArr} = useContext(UsersContext)
-  const {userInfo} = useContext(UserContext)
+  const { usersArr } = useContext(UsersContext)
+  const { userInfo } = useContext(UserContext)
+  const [saboteur, setSaboteur] = useState({})
 
   const totalPlayers = usersArr.flat().length
- 
+
   useEffect(() => {
     getAvatar()
       .then((data) => {
@@ -30,14 +31,26 @@ export default function LobbyPage() {
         setError(err);
       });
 
-    
+    function onStart() {
+
+
+      navigate(`/rooms/${room_code}/play`)
+    }
+
+    socket.on("be_start_game", onStart)
+
   }, [usersArr]);
 
- 
+
 
   function handleStart() {
-    navigate('/play')
-    socket.emit("fe_start_game")
+    const randomIndex = Math.floor(Math.random() * totalPlayers)
+    setSaboteur(usersArr[randomIndex])
+    if (usersArr[randomIndex].username === userInfo.username) {
+      userInfo.isSaboteur = true
+      usersArr[randomIndex].isSaboteur = true
+    }
+    socket.emit("fe_start_game", { saboteur: saboteur })
   }
 
 
@@ -56,11 +69,11 @@ export default function LobbyPage() {
 
         <PlayerCard key={userInfo.username} player={userInfo} />
         {usersArr.flat().map((user) => {
-            if(user.username !== userInfo.username){
-                return <PlayerCard key={user.username} player={user} />
-            }
+          if (user.username !== userInfo.username) {
+            return <PlayerCard key={user.username} player={user} />
+          }
         })}
-        
+
         <div className="avatar-buttons">
           <h3 style={{ fontSize: "2vw" }}>Choose an avatar:</h3>
 
