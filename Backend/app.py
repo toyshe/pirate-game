@@ -220,6 +220,10 @@ def fe_finish_drawing(data):
 
     socketio.emit("be_finish_drawing", {'drawingCommands': drawingCommands})
 
+@socketio.on("fe_rotate_canvas")
+def fe_rotate_canvas():
+    socketio.emit("be_rotate_canvas")
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)

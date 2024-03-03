@@ -66,6 +66,50 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
         }
     };
 
+
+    useEffect(() => {
+        socket.on("be_start_drawing", ({ offsetX, offsetY }) => {
+            if (!isDrawing) {
+
+                const canvas = canvasRef.current;
+                const context = canvas.getContext("2d");
+                context.moveTo(offsetX, offsetY);
+                context.beginPath();
+            }
+        })
+
+        socket.on("be_draw", ({ offsetX, offsetY }) => {
+            if (!isDrawing) {
+                const canvas = canvasRef.current;
+                const context = canvas.getContext("2d");
+                context.lineTo(offsetX, offsetY);
+                context.stroke();
+            }
+
+        });
+
+        socket.on("be_finish_drawing", ({ drawingCommands }) => {
+            if (!isDrawing) {
+
+                const canvas = canvasRef.current;
+                const context = canvas.getContext("2d");
+                drawingCommands.forEach((command) => {
+                    const img = new Image();
+                    img.src = command;
+                    img.onload = () => {
+                        context.drawImage(img, 0, 0);
+                    };
+                });
+            }
+        });
+
+        return () => {
+            socket.off("be_start_drawing")
+            socket.off("be_draw")
+            socket.off("be_finish_drawing")
+        }
+    }, [canvasRef])
+
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
