@@ -3,14 +3,14 @@ from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 from string import ascii_uppercase
 import sys
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "hjhjsdahhds"
 socketio = SocketIO(app, cors_allowed_origins="*")
+CORS(app)
 
-
-# avatarURLs = ['https://i.postimg.cc/bvw5txrS/Screenshot-2024-02-19-at-09-51-18.png', 'https://i.postimg.cc/TwyHkTrR/Screenshot-2024-02-19-at-09-53-28.png', 'https://i.postimg.cc/zDgcKXz7/Screenshot-2024-02-19-at-09-53-32.png', 'https://i.postimg.cc/7h0tkXsd/Screenshot-2024-02-19-at-09-53-43.png', 'https://i.postimg.cc/259KF1Lc/Screenshot-2024-02-19-at-09-53-47.png', 'https://i.postimg.cc/TwZNFB9n/Screenshot-2024-02-19-at-09-53-50.png']
-avatarURLs = ['./avatars/Avatar1.png', './avatars/Avatar2.png', './avatars/Avatar3.png', './avatars/Avatar4.png', './avatars/Avatar5.png', './avatars/Avatar6.png']
+avatarURLs = ['https://i.postimg.cc/bvw5txrS/Screenshot-2024-02-19-at-09-51-18.png', 'https://i.postimg.cc/TwyHkTrR/Screenshot-2024-02-19-at-09-53-28.png', 'https://i.postimg.cc/zDgcKXz7/Screenshot-2024-02-19-at-09-53-32.png', 'https://i.postimg.cc/7h0tkXsd/Screenshot-2024-02-19-at-09-53-43.png', 'https://i.postimg.cc/259KF1Lc/Screenshot-2024-02-19-at-09-53-47.png', 'https://i.postimg.cc/TwZNFB9n/Screenshot-2024-02-19-at-09-53-50.png']
 
 
 @app.route("/avatars", methods=["GET"])
@@ -69,7 +69,7 @@ def home():
         if create != False:
             print("Made it this far")
             room = generate_unique_code(4)
-            rooms[room] = {"members": 0, "messages": []}
+            rooms[room] = {"members": 0, "messages": [], "users": []}
         elif code not in rooms:
             return render_template("home.html", error="Room does not exist.", code=code, name=name)
         
@@ -143,13 +143,56 @@ def list_existing_rooms():
 def fe_join_room(data):
     room = data['room']
     name = data['username']
+    print(name)
+    sys.stdout.flush()
 
     join_room(room)
     rooms[room]['members'] += 1
+    rooms[room]['users'].append(name)
+    print(rooms[room]['users'])
+    sys.stdout.flush()
 
     list_existing_rooms()
 
     socketio.emit("be_join_room", {'rooms': room})
+
+@socketio.on("fe_create_room")
+def fe_create_room(data):
+    name = data['username']
+
+    room = generate_unique_code(4)
+    rooms[room] = {"members": 0, "messages": [], "users": []}
+
+    join_room(room)
+
+    rooms[room]['members'] += 1
+    rooms[room]['users'].append(name)
+    print(name, room)
+    sys.stdout.flush()
+
+    data = {"name": name, "room": room, "users": rooms[room]['users']}
+    socketio.emit("be_create_room", data)
+
+@socketio.on("fe_users_list")
+def fe_users_list(data):
+    room = data['room']
+    users = rooms[room]['users']
+
+    socketio.emit("be_users_list", {"users": users, "room": room})
+
+@socketio.on("fe_avatar_select")
+def fe_avatar_select(data):
+    name = data['username']
+    avatar = data['avatarUrl']
+
+    socketio.emit("be_avatar_select", {'username': name, 'avatarUrl': avatar})
+
+@socketio.on("fe_start_game")
+def fe_start_game(data):
+    saboteurName = data['saboteur']
+    print(saboteurName)
+    sys.stdout.flush()
+    socketio.emit("be_start_game", {'saboteur': saboteurName})
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)
