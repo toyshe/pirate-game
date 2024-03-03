@@ -22,7 +22,7 @@ export default function CanvasTestPage({timerCountdownSeconds, isDrawer, isGuess
 
     if(userInfo.draw){
         randomPrompt = getRandomPrompt()
-        
+        socket.emit("fe_random_prompt")
     }
     console.log(randomPrompt);
 
