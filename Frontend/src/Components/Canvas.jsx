@@ -147,7 +147,9 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
 
         socket.on("be_lives", ({lives}) => {
             setLives(lives)
+            console.log(lives);
         })
+        console.log(socket.connected);
 
         return () => {
             socket.off("be_start_drawing")

@@ -228,7 +228,9 @@ def fe_rotate_canvas():
 
 @socketio.on("fe_lives")
 def fe_lives(data):
+    print(data)
     lives = data['lives']
+    print(lives)
 
     socketio.emit("be_lives", {'lives': lives})
 
