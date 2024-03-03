@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import socket from "./Utils/Socket";
-
-import "../App.css";
+import socket from "../Utils/socket";
 import { useParams } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
+import { UserContext } from "../Contexts/UserContext";
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([]);

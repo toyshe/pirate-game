@@ -189,7 +189,9 @@ def fe_avatar_select(data):
 
 @socketio.on("fe_start_game")
 def fe_start_game(data):
-    saboteurName = data['saboteur']
+    print(data)
+    sys.stdout.flush()
+    saboteurName = data.get('saboteur')
     print(saboteurName)
     sys.stdout.flush()
     socketio.emit("be_start_game", {'saboteur': saboteurName})
