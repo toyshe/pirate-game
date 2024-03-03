@@ -224,6 +224,12 @@ def fe_finish_drawing(data):
 def fe_rotate_canvas():
     socketio.emit("be_rotate_canvas")
 
+@socketio.on("fe_lives")
+def fe_lives(data):
+    lives = data['lives']
+
+    socketio.emit("be_lives", {'lives': lives})
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)

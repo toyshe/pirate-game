@@ -33,6 +33,7 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
         const roundPageTimer = setTimeout(() => {
             if (!win) {
                 setLives((currentLives) => currentLives - 1);
+                socket.emit("fe_lives", {lives: lives})
                 setLose(true);
             }
         }, roundLength);
@@ -144,11 +145,16 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
             requestAnimationFrame(animate);
         })
 
+        socket.on("be_lives", ({lives}) => {
+            setLives(lives)
+        })
+
         return () => {
             socket.off("be_start_drawing")
             socket.off("be_draw")
             socket.off("be_finish_drawing")
             socket.off("be_rotate_canvas")
+            socket.off("be_lives")
         }
     }, [canvasRef])
 

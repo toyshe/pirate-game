@@ -6,6 +6,7 @@ import PlayerRole from "./PlayerRole";
 import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
 import { LivesContext } from "../Contexts/LivesContext";
+import ChatBox from "./ChatBox";
 
 function GameRoom() {
     const navigate = useNavigate();
@@ -99,6 +100,7 @@ function GameRoom() {
                     )}
                 </div>
             )}
+            <ChatBox />
         </div>
     )
 
