@@ -1,3 +1,19 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i");
+
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  word-break: break-all;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+html {
+  font-size: 1vw;
+}
+
 body {
   background-image: url("../images/Designer\ \(1\).png");
   background-repeat: no-repeat;
@@ -203,22 +219,35 @@ form {
   flex-direction: column;
 }
 
-.avatar-buttons {
-  border-color: red;
-}
-
-.avatar {
-  width: 120px;
-  margin: 5px;
-}
-
 .avatar-clicked {
-  width: 150px;
+  width: 130px;
+  height: 130px;
   margin: 5px;
   border-radius: 100px;
   outline-style: solid;
   outline-color: lightseagreen;
   outline-width: thick;
+} 
+
+.avatar-buttons {
+  border-color: red;
+}
+
+.avatar {
+  width: 120px; 
+  height: 120px; 
+  margin: 5px;
+  border-radius: 100px; 
+  box-sizing: border-box; 
+}
+
+.selected-avatar{
+  width:80px;
+  height: 80px;
+  border-radius: 100px;
+  /* margin-bottom: -10px; */
+  position: relative;
+  left: -10px;
 }
 
 h2 {

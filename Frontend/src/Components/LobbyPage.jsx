@@ -3,6 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getAvatar } from "../Utils/utils";
 import AvatarButton from "./AvatarButtons";
 import { UsersContext } from "../Contexts/UsersContext";
+import { UserContext } from "../Contexts/UserContext";
+import PlayerCard from "./PlayerCard";
+import socket from "../Utils/socket";
 
 export default function LobbyPage() {
   const minimumPlayers = 1;
@@ -12,10 +15,10 @@ export default function LobbyPage() {
   const { room_code } = useParams();
   const [avatars, setAvatars] = useState([]);
   const {usersArr} = useContext(UsersContext)
+  const {userInfo} = useContext(UserContext)
  
 
   useEffect(() => {
-
     getAvatar()
       .then((data) => {
         const { Avatars } = data;
@@ -27,7 +30,7 @@ export default function LobbyPage() {
       });
 
     
-  }, []);
+  }, [usersArr]);
 
  
 
@@ -48,10 +51,13 @@ export default function LobbyPage() {
         }}
       >
         <h2 style={{ fontSize: "5vw" }}>{room_code}</h2>
+
+        <PlayerCard key={userInfo.username} player={userInfo} />
         {console.log(usersArr)}
-        {usersArr.map((user) => {
-            
-            return <h3>{user.username}</h3>
+        {usersArr.flat().map((user) => {
+            if(user.username !== userInfo.username){
+                return <PlayerCard key={user.username} player={user} />
+            }
         })}
         
         <div className="avatar-buttons">

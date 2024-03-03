@@ -180,5 +180,12 @@ def fe_users_list(data):
 
     socketio.emit("be_users_list", {"users": users, "room": room})
 
+@socketio.on("fe_avatar_select")
+def fe_avatar_select(data):
+    name = data['username']
+    avatar = data['avatarUrl']
+
+    socketio.emit("be_avatar_select", {'username': name, 'avatarUrl': avatar})
+
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)
