@@ -200,5 +200,26 @@ def fe_random_prompt(data):
 
     socketio.emit("be_random_prompt", {'prompt' : prompt})
 
+@socketio.on("fe_start_drawing")
+def fe_start_drawing(data):
+    offsetX = data['offsetX']
+    offsetY = data['offsetY']
+
+    socketio.emit("be_start_drawing", {'offsetX': offsetX, 'offsetY': offsetY})
+
+@socketio.on("fe_draw")
+def fe_draw(data):
+    offsetX = data['offsetX']
+    offsetY = data['offsetY']
+
+    socketio.emit("be_draw", {'offsetX': offsetX, 'offsetY': offsetY})
+
+@socketio.on("fe_finish_drawing")
+def fe_finish_drawing(data):
+    drawingCommands = data['drawingCommands']
+
+    socketio.emit("be_finish_drawing", {'drawingCommands': drawingCommands})
+
+
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)

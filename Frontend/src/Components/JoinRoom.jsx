@@ -27,15 +27,14 @@ export default function JoinRoom() {
 
         function join_room(data) {
             socket.emit("fe_users_list", { room: data.rooms })
-
             console.log(data, '<<join room');
             navigate(`/rooms/${data.rooms}`)
-
         }
 
         function create_room(data) {
-            console.log(data, '<<create room');
-            navigate(`/rooms/${data.room}`)
+            if (data.name === userInfo.username) {
+                navigate(`/rooms/${data.room}`);
+            }
         }
 
         socket.on("be_list_existing_rooms", list_existing_rooms)
@@ -59,6 +58,7 @@ export default function JoinRoom() {
     const handleJoinRoom = (event) => {
         event.preventDefault()
         socket.emit("fe_join_room", { username: userInfo.username, room: event.target.value })
+
     }
 
     const handleCreate = (event) => {
