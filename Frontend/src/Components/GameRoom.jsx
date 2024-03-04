@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UsersContext } from "../Contexts/UsersContext";
 import { UserContext } from "../Contexts/UserContext";
 import PlayerRole from "./PlayerRole";
@@ -17,16 +17,23 @@ export default function GameRoom() {
     const [showPlayerDesignation, setShowPlayerDesignation] = useState(true);
     const [showRoundPage, setShowRoundPage] = useState(false);
     const [showCanvasTestPage, setShowCanvasTestPage] = useState(false);
+    const [showChat, setShowChat] = useState(true)
+
     const [gameOver, setGameOver] = useState(false);
+    const [teamLose, setTeamLose] = useState(false);
+    
     const [drawTurn, setDrawTurn] = useState(0);
     const [guessTurn, setGuessTurn] = useState(1);
     const [isDrawer, setIsDrawer] = useState();
     const [isGuesser, setIsGuesser] = useState();
-    const [teamLose, setTeamLose] = useState(false);
+    
     const [round, setRound] = useState(0);
+    
     const { usersArr } = useContext(UsersContext)
     const { userInfo } = useContext(UserContext)
     const {lives} = useContext(LivesContext)
+
+    const {room_code} = useParams()
 
     const pickTurn = () => {
         setDrawTurn((prevTurn) => prevTurn + 1);
@@ -108,8 +115,8 @@ export default function GameRoom() {
                     )}
                 </div>
             )}
-            {teamLose && gameOver && <VotesPage />}
-            <ChatBox />
+            {teamLose && gameOver && navigate(`/rooms/${room_code}/vote`)}
+            {showChat && <ChatBox />}
         </div>
     )
 }

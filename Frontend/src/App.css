@@ -300,6 +300,7 @@ h3 {
 .canvas-container{
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .canvas-title {
@@ -321,7 +322,7 @@ canvas {
   width: 500px; /* Set the width to 500 pixels */
   height: 400px; /* Set the height to 400 pixels */
   background-color: white;
-  border: 7px solid red;
+  border: 7px solid rgb(109, 72, 38);
 }
 
 
@@ -338,14 +339,19 @@ canvas {
 }
 
 .chat-window-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   background-color: lightseagreen;
   margin: 10px;
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.7);
-  max-width: 50%;
+  max-height: 300px;
+  max-width: 300px; /* Adjust the max-width as needed */
   overflow: hidden;
 }
+
 
 .chat-window {
   background-color: white;
@@ -445,9 +451,13 @@ canvas {
 
 .drawPrompt{
   position: absolute;
-  top: 1%;
+  top: -5%;
   right: 40%;
   color: black;
+}
+
+.reveal-results{
+  margin-top: 50px;
 }
 
 

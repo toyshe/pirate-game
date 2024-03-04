@@ -8,7 +8,7 @@ import PlayerCard from "./PlayerCard";
 import socket from "../Utils/socket";
 
 export default function LobbyPage() {
-  const minimumPlayers = 2;
+  const minimumPlayers = 4;
 
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);

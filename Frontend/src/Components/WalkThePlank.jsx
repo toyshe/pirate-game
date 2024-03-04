@@ -27,7 +27,7 @@ export default function WakThePlank({ votesCount }) {
 
     return (
         <div>
-            {maxName.length === 1 ?
+            {!isOpen && maxName.length === 1 ? (
                 <div className="parent">
                     <img
                         src={"https://i.postimg.cc/VLvqszmD/scroll2.png"}
@@ -41,23 +41,28 @@ export default function WakThePlank({ votesCount }) {
                         </h2>
                     </div>
                 </div>
-                : <div>
-                    <div className="parent">
-                        <img
-                            src={"https://i.postimg.cc/VLvqszmD/scroll2.png"}
-                            className="title-scroll"
-                        />
-                        <div className="scroll-child">
-                            <h2>
-                                No one was thrown overboard! The imposter survives!
-                                <TfiFaceSad />
-                            </h2>
-                        </div>
+            ) : (
+                <div className="parent">
+                    {/* <img
+                        src={"https://i.postimg.cc/VLvqszmD/scroll2.png"}
+                        className="title-scroll"
+                    /> */}
+                    <div className="scroll-child">
+                        <h2>
+                            No one was thrown overboard! The imposter survives!
+                            <TfiFaceSad />
+                        </h2>
                     </div>
-                </div>}
+                </div>
+            )}
 
-            <button onClick={handleEndGame}>Reveal Results</button>
+            {!isOpen && (
+                <button className="reveal-results" onClick={handleEndGame}>
+                    Reveal Results
+                </button>
+            )}
+
             {isOpen && <EndGame maxName={maxName} />}
         </div>
-    )
+    );
 }

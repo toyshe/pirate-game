@@ -228,8 +228,11 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
 
     return (
         <div>
-            <h1>{isDrawer.username} is drawing ... : {isGuesser.username} is guessing ...</h1>
+            {" "}
+            <h1 className="draw-role">{isDrawer.username} is drawing ... : {isGuesser.username} is guessing ...</h1>
+            {" "}
             <Timer timerCountdownSeconds={timerCountdownSeconds} />
+            {" "}
             {win && <h1>Correct Answer! Sail onto the next Round!</h1>}
             {lose && <h1>Too slow! The crew loses a life. The word was {randomPrompt}</h1>}
             <canvas
@@ -255,7 +258,7 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
 
                             <h1 className="drawPrompt"> Draw a {randomPrompt}</h1>
                         ) : (
-                            <h1 className="drawPrompt">Guess the word ... {hiddenWord.join(" ")}</h1>
+                            <h1 className="">Guess the word ... {hiddenWord.join(" ")}</h1>
                         )}
                     </>)}
                 {userInfo.draw && <button onClick={handleReset}>Reset</button>}

@@ -9,8 +9,12 @@ import TitlePage from './TitlePage'
 import JoinRoom from './JoinRoom'
 import PlayerRole from './PlayerRole'
 import GameRoom from './GameRoom'
+import EndGame from './Endgame'
+import VotesPage from './VotesPage'
 
 function App() {
+
+  const [votedPerson, setVotedPerson] = useState([])
 
   useEffect(() => {
 
@@ -31,6 +35,7 @@ function App() {
           <Route path='rooms/:room_code' element={<LobbyPage />} />
           <Route path='rooms/:room_code/play' element={<GameRoom />} />
           <Route path='rooms/:room_code/role' element={<PlayerRole />} />
+          <Route path='rooms/:room_code/vote' element={<VotesPage />} />
         </Routes>
       </UserProvider>
     </>
