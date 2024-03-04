@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { TfiFaceSad } from "react-icons/tfi";
 import EndGame from "./Endgame";
+import { UsersContext } from "../Contexts/UsersContext";
 
 export default function WakThePlank({ votesCount }) {
     console.log(votesCount);
@@ -9,6 +10,8 @@ export default function WakThePlank({ votesCount }) {
     let maxName = []
 
     const [isOpen, setIsOpen] = useState(false)
+
+    const {usersArr} = useContext(UsersContext)
 
     for (const key in votesCount) {
         if (votesCount[key] > maxVotes) {
@@ -21,7 +24,7 @@ export default function WakThePlank({ votesCount }) {
         }
     }
 
-    function handleEndGame(){
+    function handleEndGame() {
         setIsOpen(true)
     }
 
@@ -29,40 +32,43 @@ export default function WakThePlank({ votesCount }) {
         <div>
             {!isOpen && maxName.length === 1 ? (
                 <div className="parent">
-                    <img
-                        src={"https://i.postimg.cc/VLvqszmD/scroll2.png"}
-                        className="title-scroll"
-                    />
-                    <div className="scroll-child">
-                        <h2>
-                            {maxName[0]}
-                            <br />
-                            must walk the plank...
-                        </h2>
+                    <img src={"https://i.postimg.cc/VLvqszmD/scroll2.png"} className="title-scroll" />
+                    <div className="walk-plank">
+                        <h2>{maxName[0]}<br />must walk the plank...</h2>
                     </div>
                 </div>
             ) : (
                 <div className="parent">
-                    {/* <img
-                        src={"https://i.postimg.cc/VLvqszmD/scroll2.png"}
-                        className="title-scroll"
-                    /> */}
+                    <img src={"https://i.postimg.cc/VLvqszmD/scroll2.png"} className="title-scroll" />
                     <div className="scroll-child">
-                        <h2>
-                            No one was thrown overboard! The imposter survives!
-                            <TfiFaceSad />
-                        </h2>
+                        <h2>No one was thrown overboard! The imposter survives!<TfiFaceSad /></h2>
                     </div>
                 </div>
             )}
 
-            {!isOpen && (
+            {(
                 <button className="reveal-results" onClick={handleEndGame}>
                     Reveal Results
                 </button>
             )}
 
-            {isOpen && <EndGame maxName={maxName} />}
+            {!isOpen && <div>
+                {usersArr.map((user) => {
+                    if (user.isSaboteur) {
+                        return <h1>The saboteur was {user.username}</h1>
+                    }
+                })}
+                <div>
+                    {usersArr.map((user) => {
+                        if (user.isSaboteur) {
+                            { return maxName.length === 1 && maxName[0] === user.username ? <h1>The crew made it home safely</h1> : <h1>The crew never made it back to port...</h1> }
+                        }
+                    })}
+                </div>
+
+
+                <button onClick={() => { naviagte("/story") }}>Return to port</button>
+            </div>}
         </div>
     );
 }

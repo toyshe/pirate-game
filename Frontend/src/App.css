@@ -22,7 +22,7 @@ body {
   font-family: "Protest Revolution", sans-serif;
   font-weight: 400;
   font-style: normal;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .parent {
@@ -340,7 +340,7 @@ canvas {
 
 .chat-window-container {
   position: absolute;
-  top: 20px;
+  top: 100px;
   right: 20px;
   background-color: lightseagreen;
   margin: 10px;
@@ -453,14 +453,27 @@ canvas {
   position: absolute;
   top: -5%;
   right: 40%;
-  color: black;
+  color: white;
 }
 
 .reveal-results{
   margin-top: 50px;
 }
 
-
+.walk-plank{
+  position: absolute;
+  top: 68%;
+  left: 46%;
+  transform: translate(-50%, -50%);
+  border-radius: 1;
+  color: black;
+  width: 36vw;
+  height: 20vw;
+  max-width: 45vw;
+  max-height: fit-content;
+  min-height: 20vw;
+  text-align: center;
+}
 
 @keyframes spinImage {
   from {
