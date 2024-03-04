@@ -56,12 +56,9 @@ export default function LobbyPage() {
 
   function handleStart() {
     const randomIndex = Math.floor(Math.random() * totalPlayers);
-    const selectedSaboteur = usersArr[randomIndex]; // Select a random saboteur
-    setSaboteur(selectedSaboteur); // Update the saboteur state
-    console.log(saboteur); // This may not log the updated value immediately due to React's asynchronous state updates
-    console.log(userInfo);
-    console.log(usersArr);
-    socket.emit("fe_start_game", { saboteur: selectedSaboteur.username }); // Pass the username of the selected saboteur
+    const selectedSaboteur = usersArr[randomIndex]; 
+    setSaboteur(selectedSaboteur); 
+    socket.emit("fe_start_game", { saboteur: selectedSaboteur.username }); 
   }
   
 

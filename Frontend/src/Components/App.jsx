@@ -30,6 +30,7 @@ function App() {
           <Route path='/rooms' element={<JoinRoom />} />
           <Route path='rooms/:room_code' element={<LobbyPage />} />
           <Route path='rooms/:room_code/play' element={<GameRoom />} />
+          <Route path='rooms/:room_code/role' element={<PlayerRole />} />
         </Routes>
       </UserProvider>
     </>

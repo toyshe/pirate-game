@@ -11,7 +11,7 @@ export default function TitlePage() {
     <>
     <center>
       <div className="parent">
-        <img src={"../../images/scroll2.png"} className="title-scroll"/>
+        <img src={"https://i.postimg.cc/VLvqszmD/scroll2.png"} className="title-scroll"/>
         <div className="scroll-child">
           <h1>The Siren's Wrath</h1>
         </div>

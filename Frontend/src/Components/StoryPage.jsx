@@ -26,14 +26,14 @@ export default function StoryPage() {
     return (
         <div className="container">
             <div className="parent">
-                <img src={"../../images/scroll.png"} className="story-scroll" />
+                <img src={"https://i.postimg.cc/tR2dHsQs/scroll.png"} className="story-scroll" />
                 <div className="child">
                     <p>
-                        An infamous crew of fearsome pirates sail the seven seas, plundering
-                        and pillaging all in their wake.
+                        An infamous crew of frightful pirates sail the seven seas, pillaging
+                        and wrecking all in their wake.
                         <br />
                         <br />
-                        Unbeknownst to the rest of the crew, one of the pirates is seduced
+                        Unbeknownst to the rest of the crew, one of the pirate is seduced
                         by The Siren, who longs to bring the ship to its watery demise.
                         <br />
                         <br />
@@ -48,19 +48,6 @@ export default function StoryPage() {
                 </label>
                 <input id="username" value={usernameInput} type="text" placeholder="Enter username..." onChange={(event) => { setUsernameInput(event.target.value) }} />
                 <button onClick={handleSubmit}>Continue</button>
-                {/* <button>Continue</button> */}
-                {/* {showButtons ? <>
-
-                    <button onClick={handleJoin} >
-                        Join Room
-                    </button>
-                    <button onClick={handleClick}>
-                        Create Room
-                    </button>
-                </> : null}
-                <div className="roomsList">
-                    {joinClick ? roomsArr.map((room) => { return <button key={room} value={room} onClick={handleJoinRoom}>{room}</button> }) : null}
-                </div> */}
             </form>
         </div>
     )

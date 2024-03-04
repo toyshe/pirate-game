@@ -66,21 +66,25 @@ export default function JoinRoom() {
         socket.emit("fe_create_room", { username: userInfo.username })
     }
 
-    return (<>
-        <button onClick={handleJoin}>Join Room</button>
-        <button onClick={handleCreate}>Create Room</button>
+    return (<div className="room-button-container">
+        <button className="join-button" onClick={handleJoin}>Join Room</button>
+        <button className="create-button" onClick={handleCreate}>Create Room</button>
         {joinClick && loading ? (
             <p>Loading...</p>
         ) : joinClick && roomsArr.length === 0 ? (
             <p>No rooms available</p>
         ) : (
-
-            roomsArr.map((room) => (
-
-                <button key={room} value={room} onClick={handleJoinRoom}>
-                    {room}
-                </button>
-            ))
+            <div className="room-list">
+                
+                    {roomsArr.map((room) => (
+                        
+                            <button key={room} value={room} onClick={handleJoinRoom}>
+                                {room}
+                            </button>
+                        
+                    ))}
+                
+            </div>
         )}
-    </>)
+    </div>)
 }

@@ -8,8 +8,9 @@ import CanvasTestPage from "./CanvasTestPage";
 import { LivesContext } from "../Contexts/LivesContext";
 import ChatBox from "./ChatBox";
 import VotesPage from "./VotesPage";
+import EndGame from "./Endgame";
 
-function GameRoom() {
+export default function GameRoom() {
     const navigate = useNavigate();
     //   const teamLives = useContext(LivesContext);
 
@@ -111,79 +112,4 @@ function GameRoom() {
             <ChatBox />
         </div>
     )
-
-    //   let playerDesignationLength = 5000;
-    //   let roundLength = 30000;
-    //   let roundBreakLength = 5000;
-    //   let numberOfRounds = 5;
-
-    //   useEffect(() => {
-    //     const playerDesignationTimer = setTimeout(() => {
-    //       setShowPlayerDesignation(false);
-    //       setShowRoundPage(true);
-    //     }, playerDesignationLength);
-
-    //     return () => clearTimeout(playerDesignationTimer);
-    //   }, []);
-
-    //   useEffect(() => {
-    //     if (showRoundPage) {
-    //       pickTurn();
-    //       if (round + 1 > numberOfRounds) setGameOver(true);
-    //       else {
-    //         const roundPageTimer = setTimeout(() => {
-    //           setShowRoundPage(false);
-    //           setShowCanvasTestPage(true);
-    //         }, roundBreakLength);
-
-    //         return () => clearTimeout(roundPageTimer);
-    //       }
-    //     }
-    //   }, [showRoundPage]);
-
-    //   useEffect(() => {
-    //     if (showCanvasTestPage) {
-    //       const canvasTestPageTimer = setTimeout(() => {
-    //         setShowCanvasTestPage(false);
-    //         setShowRoundPage(true);
-    //       }, roundLength);
-
-    //       return () => clearTimeout(canvasTestPageTimer);
-    //     }
-    //   }, [showCanvasTestPage]);
-
-    //   useEffect(() => {
-    //     if (teamLives.lives < 1) {
-    //       setGameOver(true);
-    //       setTeamLose(true);
-    //     }
-    //   }, [teamLives]);
-
-    //   return (
-    //     <div>
-    //       <h2>Lives: {teamLives.lives}</h2>
-    //       {!gameOver && !teamLose && (
-    //         <div>
-    //           {showPlayerDesignation && <PlayerDesignation />}
-    //           {showRoundPage && <RoundPage round={round} setRound={setRound} />}
-    //           {showCanvasTestPage && (
-    //             <CanvasTestPage
-    //               timerCountdownSeconds={roundLength / 1000}
-    //               users={users}
-    //               setUsers={setUsers}
-    //               isDrawer={isDrawer}
-    //               isGuesser={isGuesser}
-    //             />
-    //           )}
-    //         </div>
-    //       )}
-    //       {!teamLose && gameOver && <VotePage playerList={users.playerList} />}
-    //       {teamLose && (
-    //         <EndGamePage playerList={users.playerList} resultsVisible={true} />
-    //       )}
-    //       <ChatWindow />
-    //     </div>
-    //   );
 }
-
-export default GameRoom;

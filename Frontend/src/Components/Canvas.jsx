@@ -62,7 +62,7 @@ export default function Canvas({ timerCountdownSeconds, randomPrompt, isDrawer, 
         context.lineJoin = "round";
 
         const img = new Image();
-        img.src = "../images/gridPaper.png";
+        img.src = "https://i.postimg.cc/VvLjC8Ms/grid-Paper.png";
         img.onload = () => {
             setBackgroundImage(img);
         };

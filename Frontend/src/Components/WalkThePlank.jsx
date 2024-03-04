@@ -30,7 +30,7 @@ export default function WakThePlank({ votesCount }) {
             {maxName.length === 1 ?
                 <div className="parent">
                     <img
-                        src={"../../images/scroll2.png"}
+                        src={"https://i.postimg.cc/VLvqszmD/scroll2.png"}
                         className="title-scroll"
                     />
                     <div className="scroll-child">
@@ -44,7 +44,7 @@ export default function WakThePlank({ votesCount }) {
                 : <div>
                     <div className="parent">
                         <img
-                            src={"../../images/scroll2.png"}
+                            src={"https://i.postimg.cc/VLvqszmD/scroll2.png"}
                             className="title-scroll"
                         />
                         <div className="scroll-child">
