@@ -1,27 +1,39 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UsersContext } from "../Contexts/UsersContext";
 import { UserContext } from "../Contexts/UserContext";
 import PlayerRole from "./PlayerRole";
 import RoundPage from "./RoundPage";
 import CanvasTestPage from "./CanvasTestPage";
+import { LivesContext } from "../Contexts/LivesContext";
+import ChatBox from "./ChatBox";
+import VotesPage from "./VotesPage";
+import EndGame from "./Endgame";
 
-function GameRoom() {
+export default function GameRoom() {
     const navigate = useNavigate();
     //   const teamLives = useContext(LivesContext);
 
     const [showPlayerDesignation, setShowPlayerDesignation] = useState(true);
     const [showRoundPage, setShowRoundPage] = useState(false);
     const [showCanvasTestPage, setShowCanvasTestPage] = useState(false);
+    const [showChat, setShowChat] = useState(true)
+
     const [gameOver, setGameOver] = useState(false);
+    const [teamLose, setTeamLose] = useState(false);
+    
     const [drawTurn, setDrawTurn] = useState(0);
     const [guessTurn, setGuessTurn] = useState(1);
     const [isDrawer, setIsDrawer] = useState();
     const [isGuesser, setIsGuesser] = useState();
-    const [teamLose, setTeamLose] = useState(false);
+    
     const [round, setRound] = useState(0);
+    
     const { usersArr } = useContext(UsersContext)
     const { userInfo } = useContext(UserContext)
+    const {lives} = useContext(LivesContext)
+
+    const {room_code} = useParams()
 
     const pickTurn = () => {
         setDrawTurn((prevTurn) => prevTurn + 1);
@@ -38,9 +50,8 @@ function GameRoom() {
         const currentGuess = usersArr[guessTurn];
         setIsGuesser(currentGuess);
         currentGuess.username === userInfo.username ? (userInfo.guess = true) : (userInfo.guess = false);
-        console.log(isDrawer, '<<isDrawer');
-        console.log(isGuesser, '<<isGuesser');
-        console.log(userInfo, '<<userInfo');
+
+        console.log(userInfo);
     };
 
     let playerDesignationLength = 5000;
@@ -85,8 +96,16 @@ function GameRoom() {
         }
     }, [showCanvasTestPage]);
 
+    useEffect(() => {
+        if(lives < 1){
+            setGameOver(true)
+            setTeamLose(true)
+        }
+    })
+
     return (
         <div>
+            <h2>Lives: {lives}</h2>
             {!gameOver && !teamLose && (
                 <div>
                     {showPlayerDesignation && <PlayerRole />}
@@ -96,81 +115,8 @@ function GameRoom() {
                     )}
                 </div>
             )}
+            {teamLose && gameOver && navigate(`/rooms/${room_code}/vote`)}
+            {showChat && <ChatBox />}
         </div>
     )
-
-    //   let playerDesignationLength = 5000;
-    //   let roundLength = 30000;
-    //   let roundBreakLength = 5000;
-    //   let numberOfRounds = 5;
-
-    //   useEffect(() => {
-    //     const playerDesignationTimer = setTimeout(() => {
-    //       setShowPlayerDesignation(false);
-    //       setShowRoundPage(true);
-    //     }, playerDesignationLength);
-
-    //     return () => clearTimeout(playerDesignationTimer);
-    //   }, []);
-
-    //   useEffect(() => {
-    //     if (showRoundPage) {
-    //       pickTurn();
-    //       if (round + 1 > numberOfRounds) setGameOver(true);
-    //       else {
-    //         const roundPageTimer = setTimeout(() => {
-    //           setShowRoundPage(false);
-    //           setShowCanvasTestPage(true);
-    //         }, roundBreakLength);
-
-    //         return () => clearTimeout(roundPageTimer);
-    //       }
-    //     }
-    //   }, [showRoundPage]);
-
-    //   useEffect(() => {
-    //     if (showCanvasTestPage) {
-    //       const canvasTestPageTimer = setTimeout(() => {
-    //         setShowCanvasTestPage(false);
-    //         setShowRoundPage(true);
-    //       }, roundLength);
-
-    //       return () => clearTimeout(canvasTestPageTimer);
-    //     }
-    //   }, [showCanvasTestPage]);
-
-    //   useEffect(() => {
-    //     if (teamLives.lives < 1) {
-    //       setGameOver(true);
-    //       setTeamLose(true);
-    //     }
-    //   }, [teamLives]);
-
-    //   return (
-    //     <div>
-    //       <h2>Lives: {teamLives.lives}</h2>
-    //       {!gameOver && !teamLose && (
-    //         <div>
-    //           {showPlayerDesignation && <PlayerDesignation />}
-    //           {showRoundPage && <RoundPage round={round} setRound={setRound} />}
-    //           {showCanvasTestPage && (
-    //             <CanvasTestPage
-    //               timerCountdownSeconds={roundLength / 1000}
-    //               users={users}
-    //               setUsers={setUsers}
-    //               isDrawer={isDrawer}
-    //               isGuesser={isGuesser}
-    //             />
-    //           )}
-    //         </div>
-    //       )}
-    //       {!teamLose && gameOver && <VotePage playerList={users.playerList} />}
-    //       {teamLose && (
-    //         <EndGamePage playerList={users.playerList} resultsVisible={true} />
-    //       )}
-    //       <ChatWindow />
-    //     </div>
-    //   );
 }
-
-export default GameRoom;

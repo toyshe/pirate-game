@@ -12,6 +12,7 @@ export const UsersProvider = ({ children }) => {
       username: user,
       avatarUrl: null,
       isSaboteur: false,
+      votes: 0
     }));
     setUsersArr(newArr); // Set the state directly to the new array
   };
@@ -19,21 +20,25 @@ export const UsersProvider = ({ children }) => {
   useEffect(() => {
     function fetchUsers({ users, room }) {
       setUsersArr(prevUsers => {
-        const newArr = users.map(user => ({
+        // Filter out existing users
+        const filteredUsers = users.filter(user => !prevUsers.some(prevUser => prevUser.username === user));
+        // Create new user objects for the filtered users
+        const newArr = filteredUsers.map(user => ({
           username: user,
           avatarUrl: null,
           isSaboteur: false,
         }));
+        // Concatenate the existing users with the new ones
         return [...prevUsers, ...newArr];
       });
     }
-    socket.on("be_users_list", fetchUsers)
+    socket.on("be_users_list", fetchUsers);
 
     return () => {
-      socket.off("be_users_list", fetchUsers)
-
+      socket.off("be_users_list", fetchUsers);
     }
-  }, [])
+  }, []);
+
 
 
   return (

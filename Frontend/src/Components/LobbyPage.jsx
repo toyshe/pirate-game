@@ -8,7 +8,7 @@ import PlayerCard from "./PlayerCard";
 import socket from "../Utils/socket";
 
 export default function LobbyPage() {
-  const minimumPlayers = 2;
+  const minimumPlayers = 4;
 
   const navigate = useNavigate();
   const [chosenAvatar, setChosenAvatar] = useState(null);
@@ -54,12 +54,13 @@ export default function LobbyPage() {
   }, [usersArr]);
 
 
-
   function handleStart() {
-    const randomIndex = Math.floor(Math.random() * totalPlayers)
-    setSaboteur(usersArr[randomIndex])
-    socket.emit("fe_start_game", { saboteur: saboteur.username })
+    const randomIndex = Math.floor(Math.random() * totalPlayers);
+    const selectedSaboteur = usersArr[randomIndex]; 
+    setSaboteur(selectedSaboteur); 
+    socket.emit("fe_start_game", { saboteur: selectedSaboteur.username }); 
   }
+  
 
 
   return (

@@ -103,6 +103,7 @@ def message(data):
 
 @socketio.on("connect")
 def connect(auth):
+    list_existing_rooms()
     room = session.get("room")
     name = session.get("name")
     if not room or not name:
@@ -189,10 +190,84 @@ def fe_avatar_select(data):
 
 @socketio.on("fe_start_game")
 def fe_start_game(data):
-    saboteurName = data['saboteur']
+    print(data)
+    sys.stdout.flush()
+    saboteurName = data.get('saboteur')
     print(saboteurName)
     sys.stdout.flush()
     socketio.emit("be_start_game", {'saboteur': saboteurName})
+
+@socketio.on("fe_random_prompt")
+def fe_random_prompt(data):
+    prompt = data['prompt']
+
+    socketio.emit("be_random_prompt", {'prompt' : prompt})
+
+@socketio.on("fe_start_drawing")
+def fe_start_drawing(data):
+    offsetX = data['offsetX']
+    offsetY = data['offsetY']
+
+    socketio.emit("be_start_drawing", {'offsetX': offsetX, 'offsetY': offsetY})
+
+@socketio.on("fe_draw")
+def fe_draw(data):
+    offsetX = data['offsetX']
+    offsetY = data['offsetY']
+
+    socketio.emit("be_draw", {'offsetX': offsetX, 'offsetY': offsetY})
+
+@socketio.on("fe_finish_drawing")
+def fe_finish_drawing(data):
+    drawingCommands = data['drawingCommands']
+
+    socketio.emit("be_finish_drawing", {'drawingCommands': drawingCommands})
+
+@socketio.on("fe_rotate_canvas")
+def fe_rotate_canvas():
+    socketio.emit("be_rotate_canvas")
+
+@socketio.on("fe_lives")
+def fe_lives(data):
+    print(data)
+    lives = data['lives']
+    print(lives)
+
+    socketio.emit("be_lives", {'lives': lives})
+
+vote_counts = {}
+
+@socketio.on("fe_votes")
+def fe_votes(data):
+    room = data['room']
+    username = data['username']
+
+    if room not in vote_counts:
+        vote_counts[room] = {}
+
+    if username in vote_counts[room]:
+        vote_counts[room][username] += 1
+    else:
+        vote_counts[room][username] = 1
+    socketio.emit("be_votes", {'votes': vote_counts[room]})
+
+@socketio.on("fe_send_message")
+def fe_send_message(data):
+    room = data['room']
+    name = data['name']
+    message = data['message']
+
+    message_content = {
+        "name": name, "message": message, "room": room
+    }
+
+    rooms[room]["messages"].append(message_content)
+    socketio.emit("be_send_message", message_content)
+
+@socketio.on("fe_reset_canvas")
+def fe_reset_canvas():
+    socketio.emit("be_reset_canvas")
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True, host='0.0.0.0', port=8080, allow_unsafe_werkzeug=True)

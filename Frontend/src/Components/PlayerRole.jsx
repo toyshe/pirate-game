@@ -11,7 +11,7 @@ export default function PlayerRole() {
             <main>
                 <h1 className="player-title">You are...</h1>
                 <div className="parent">
-                    <img src={"../../images/scroll2.png"} className="title-scroll" />
+                    <img src={"https://i.postimg.cc/VLvqszmD/scroll2.png"} className="title-scroll" />
                     <div className="scroll-child">
                         {console.log(userInfo, '<<<userInfo')}
                         {console.log(usersArr, '<<usersArr')}

@@ -27,15 +27,14 @@ export default function JoinRoom() {
 
         function join_room(data) {
             socket.emit("fe_users_list", { room: data.rooms })
-
             console.log(data, '<<join room');
             navigate(`/rooms/${data.rooms}`)
-
         }
 
         function create_room(data) {
-            console.log(data, '<<create room');
-            navigate(`/rooms/${data.room}`)
+            if (data.name === userInfo.username) {
+                navigate(`/rooms/${data.room}`);
+            }
         }
 
         socket.on("be_list_existing_rooms", list_existing_rooms)
@@ -59,6 +58,7 @@ export default function JoinRoom() {
     const handleJoinRoom = (event) => {
         event.preventDefault()
         socket.emit("fe_join_room", { username: userInfo.username, room: event.target.value })
+
     }
 
     const handleCreate = (event) => {
@@ -66,21 +66,25 @@ export default function JoinRoom() {
         socket.emit("fe_create_room", { username: userInfo.username })
     }
 
-    return (<>
-        <button onClick={handleJoin}>Join Room</button>
-        <button onClick={handleCreate}>Create Room</button>
+    return (<div className="room-button-container">
+        <button className="join-button" onClick={handleJoin}>Join Room</button>
+        <button className="create-button" onClick={handleCreate}>Create Room</button>
         {joinClick && loading ? (
             <p>Loading...</p>
         ) : joinClick && roomsArr.length === 0 ? (
             <p>No rooms available</p>
         ) : (
-
-            roomsArr.map((room) => (
-
-                <button key={room} value={room} onClick={handleJoinRoom}>
-                    {room}
-                </button>
-            ))
+            <div className="room-list">
+                
+                    {roomsArr.map((room) => (
+                        
+                            <button key={room} value={room} onClick={handleJoinRoom}>
+                                {room}
+                            </button>
+                        
+                    ))}
+                
+            </div>
         )}
-    </>)
+    </div>)
 }
